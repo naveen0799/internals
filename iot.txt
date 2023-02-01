@@ -1,0 +1,151 @@
+Experiment 2
+Aim:To interface LED/Buzzer with Arduino/Raspberry Pi and write a program to turn ON LED for 1 sec after every 2 seconds.
+Requirements:
+    1. Standard 5mm LED
+    2. One Resistor
+    3. Arduino Uno microcontroller board (ATmega328p)
+    4. Jumper wires
+Procedure: 
+Step 1: Open www.wokwi.com in browser and select “Arduino Uno” microcontroller.
+Step 2: In the Simulation part, select the above list by clicking “+” symbol, which are specified in above requirements.
+Step 3: By using jumper wires, Connect Anode (A-pin) of LED to digital pin 3 of Arduino microcontrollerthrough the resistor and Cathode (C-pin) of LED to ground.
+Step 4: Write program in “sketch.ino”.
+Program:
+voidsetup() {
+  // put your setup code here, to run once:
+pinMode(3, OUTPUT);
+}
+
+voidloop() {
+  // put your main code here, to run repeatedly:
+digitalWrite(3,HIGH); //we can also write digitalWrite(3,1);
+delay(1000);
+digitalWrite(3,LOW);//we can also write digitalWrite(3,0);
+delay(1000);
+}
+
+Output:LED will turn on for 1 sec after every 2 seconds by interfacing LED with Arduino.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^6
+Experiment 11
+Aim: Write a program on Arduino/Raspberry Pi to publish temperature data to MQTT broker
+Procedure:
+Step 1: Download & install Raspeberri Pi from https://www.raspberrypi.com/software/
+Step 2: Open the raspberry pi terminal and write program
+Program:
+import sys
+importAdafruit_DHT
+import time
+frompaho.mqtt.client import *
+client=Client("Device1")
+c=client.connect('broker.hivemq.com',1883)
+if c==0:
+	print('client connected')
+	while True:
+		hum,temp=Adafruit_DHT.read_retry(11,4)
+		print('Temperature:',temp)
+		print('Humidity:', Hum)
+		message='temp='+str(temp)+",hum="+str(hum)
+		client.publish('iotdata',message)
+		time.sleep(2)
+
+Step 3: Now save it
+Output:
+pi@raspberrypi:~ $ cd iot
+pi@raspberrypi:~/iot $ python3 dhtpublish.py 
+client connected
+Temperature:  28.0
+Humidity:  95.0
+Temperature:  29.0
+Humidity:  94.0
+Temperature:  28.0
+Humidity:  94.0
+Temperature:  29.0
+Humidity:  95.0
+Temperature:  28.0
+Humidity:  94.0
+Temperature:  29.0
+Humidity:  94.0
+Temperature:  28.0
+Humidity:  93.0
+
+To see the result in Smartphone
+Step 1: Download MQTT Dash app from Play Store.
+Step 2: Open MQTT Dash app in mobile and click on “+” icon.
+Step 3: Enter Name like “mysensor1” and enter “broker.hivemq.com” in Address field.
+Step 4: Save it.
+Step 5: Now click on “mysensor1”
+
+
+To see the result in Website
+Open“ hivemq.com/demos/websocket-client/ “ in google chrome.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Experiment 10
+Aim: To install MySql database on Raspberry Pi & perform basic SQL queries
+Procedure: Install MySQL database on raspberry pi
+Follow below steps to know how to install MYSQL server on raspberry pi or to know how to install MariaDB server on raspberry pi.
+    1. Please open the raspberry pi terminal.
+    2. Execute the following command to update the existing packages.
+sudo apt-get update
+    3. Now execute the following to install MySQL server which is shown below. While installing if it is asking do you want to continue then please enter y and hit enter
+sudo apt-get install mysql-server
+    4. Now please execute the following command for secure installation which is shown below.
+sudomysql_secure_installation
+ 5. Please hit Enter for current root password.
+    6. Now please Enter y and hit Enter for setting a new password which is shown below
+7. Now Please enter New password which is shown below.
+8. Now please enter y to remove anonymous user and hit Enter.
+9. Now please enter y to disallow remote login which is shown below
+10. Please enter y to remove test databases which is shown below
+11. Please enter y to reload privileges tables which is shown below
+12. Now please execute the following command to login into the database and Enter the password which you have entered in step 7.
+sudomysql -u root –p
+13. Please execute the following command to see databases present in the mysql database.
+show databases;
+14. Execute the following to create Demo database in mysql server which is shown below.
+CREATE DATABASE Demo;
+ 15. Now please execute the following to go in Demo database
+USE Demo;
+16. Please execute the following command to create database user
+CREATE USER ‘admin’@’localhost’ IDENTIFIED BY ‘admin’;
+17. Execute the following command to grant all previleges
+GRANT ALL PRIVILEGES ON Demo.* TO ‘admin’@’localhost’;
+18. Now execute the following command save all the changes
+FLUSH PRIVILEGES;
+19. Now please execute the following command to come out of database.
+quit
+20. Execute the following command to restart the MYSQL server
+sudo service mysql restart
+
+Follow the following steps to insert and fetch from the MySQL database.
+    1. Open the raspberry pi terminal.
+    2. Execute the following command to login to the database and enter the password which is shown below.
+sudomysql -u root –p
+    3. Execute the following command to use Demo database which is shown above.
+USE Demo;
+Output: MariaDB [(none)]> use Demo
+	Database changed
+    4. Execute the following command to create login table which has two coloumsi.e is username and password which is shown above.
+create table login(username varchar(25), password varchar(25));
+Output: MariaDB [Demo]> create table data(snoint(11), temp varchar(25), hum varchar(25));
+Query OK, 0 rows affected (0.06 sec)
+    5. Execute the following command to insert data into login table which is shown below.
+insert into login values(‘admin’,’admin123′);
+    6. To see the inserted values please execute the following command which is shown below
+select * from login;
+    7. To insert data values
+Output: MariaDB [Demo]>insert into login values(‘user’,’user123′);
+Query OK, 1 row affected (0.01 sec)
+    8. To delete data values
+Output: MariaDB [Demo]> delete from data where username=‘user’;
+	Query OK, 1 row affected (0.01 sec)
+    9. To update data values
+Output: MariaDB [temphum]> update data set temp='26.4' where sno=1;
+Query OK, 1 row affected (0.01 sec)
+  Rows matched: 1  Changed: 1  Warnings: 0
+    10. To exit
+Output:MariaDB [temphum]> Ctrl-C -- exit!
+Aborted
+pi@raspberrypi:~ $
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

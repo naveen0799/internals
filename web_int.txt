@@ -1,0 +1,59 @@
+Experiment 12: 
+Create a simple visual bean with a area filled with a color. The shape of the area depends on the 
+property shape. If it is set to true then the shape of the area is Square and it is Circle, if it is false. 
+The color of the area should be changed dynamically for every mouse click
+PROGRAM:
+package sunw.demo.colors;
+import java.awt.*;
+import java.awt.event.*;
+public class Colors extends Canvas
+{
+transient private Color color;
+private boolean rectangular;
+public Colors()
+{
+addMouseListener(new MouseAdapter(){
+public void mousePressed(MouseEvent me){
+change(); }
+});
+rectangular=false;
+setSize(100,100);
+change();
+}
+public boolean getRectangular()
+{
+return rectangular;
+}
+public void setRectangular(boolean flag)
+{
+this.rectangular=flag;
+repaint();
+}
+public void change()
+{
+color=randomColor();
+repaint();
+}
+private Color randomColor()
+{
+int r=(int)(255*Math.random());
+int g=(int)(255*Math.random());
+int b=(int)(255*Math.random());
+return new Color(r,g,b);
+}
+public void paint(Graphics g)
+{
+Dimension d=getSize();
+int h=d.height;
+int w=d.width;
+g.setColor(color);
+if(rectangular)
+{
+g.fillRect(0,0,w-1,h-1);
+}
+else
+{
+g.fillOval(0,0,w-1,h-1);
+}
+}
+}
