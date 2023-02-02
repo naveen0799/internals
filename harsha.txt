@@ -100,3 +100,30 @@ To exit
 Output:MariaDB [temphum]> Ctrl-C -- exit!
 Aborted
 pi@raspberrypi:~ $
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+import sys
+importAdafruit_DHT
+import time
+frompaho.mqtt.client import *
+
+defon_message(client,userdata,msg):
+	print('Channel:',msg.topic)
+	message=str(msg.payload.decode('utf-8'))
+	print('Message: ',message)
+	hum,temp=Adafruit_DHT.read_retry(11,4)
+	t='temp='+str(temp)
+	h='hum='+str(hum)
+	if message=='Temperature':
+		client.publish('iotdata',t)
+	if message=='Humidity':
+		client.publsih('iotdata',h)
+
+client=Client("Device1")
+c=client.connect('broker.hivemq.com',1883)
+if c==0:
+	print('client connected')
+	client.subscribe('iot')
+	client.on_message=on_message
+	client.loop_forever()
