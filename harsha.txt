@@ -1,0 +1,102 @@
+Follow below steps to know how to install MYSQL server on raspberry pi or to know how to install MariaDB server on raspberry pi.
+Please open the raspberry pi terminal.
+Execute the following command to update the existing packages.
+sudo apt-get update
+Now execute the following to install MySQL server which is shown below. While installing if it is asking do you want to continue then please enter y and hit enter
+sudo apt-get install mysql-server
+
+Now please execute the following command for secure installation which is shown below.
+sudomysql_secure_installation
+ 
+Please hit Enter for current root password.
+Now please Enter y and hit Enter for setting a new password which is shown below
+
+
+Now Please enter New password which is shown below.
+
+
+Now please enter y to remove anonymous user and hit Enter.
+
+
+Now please enter y to disallow remote login which is shown below
+
+
+Please enter y to remove test databases which is shown below
+
+Please enter y to reload privileges tables which is shown below
+
+Now please execute the following command to login into the database and Enter the password which you have entered in step 7.
+sudomysql -u root –p
+
+
+
+Please execute the following command to see databases present in the mysql database.
+show databases;
+
+
+Execute the following to create Demo database in mysql server which is shown below.
+CREATE DATABASE Demo;
+
+
+Now please execute the following to go in Demo database
+USE Demo;
+
+
+Please execute the following command to create database user
+CREATE USER ‘admin’@’localhost’ IDENTIFIED BY ‘admin’;
+
+Execute the following command to grant all previleges
+GRANT ALL PRIVILEGES ON Demo.* TO ‘admin’@’localhost’;
+
+
+Now execute the following command save all the changes
+FLUSH PRIVILEGES;
+
+
+
+Now please execute the following command to come out of database.
+quit
+
+
+Execute the following command to restart the MYSQL server
+sudo service mysql restart
+
+
+
+Follow the following steps to insert and fetch from the MySQL database.
+Open the raspberry pi terminal.
+Execute the following command to login to the database and enter the password which is shown below.
+sudomysql -u root –p
+
+Execute the following command to use Demo database which is shown above.
+USE Demo;
+Output: MariaDB [(none)]> use Demo
+	Database changed
+Execute the following command to create login table which has two coloumsi.e is username and password which is shown above.
+create table login(username varchar(25), password varchar(25));
+Output: MariaDB [Demo]> create table data(snoint(11), temp varchar(25), hum varchar(25));
+Query OK, 0 rows affected (0.06 sec)
+Execute the following command to insert data into login table which is shown below.
+insert into login values(‘admin’,’admin123′);
+
+
+
+To see the inserted values please execute the following command which is shown below
+select * from login;
+
+
+
+To insert data values
+Output: MariaDB [Demo]>insert into login values(‘user’,’user123′);
+Query OK, 1 row affected (0.01 sec)
+To delete data values
+Output: MariaDB [Demo]> delete from data where username=‘user’;
+	Query OK, 1 row affected (0.01 sec)
+To update data values
+Output: MariaDB [temphum]> update data set temp='26.4' where sno=1;
+Query OK, 1 row affected (0.01 sec)
+  Rows matched: 1  Changed: 1  Warnings: 0
+To exit
+Output:MariaDB [temphum]> Ctrl-C -- exit!
+Aborted
+pi@raspberrypi:~ $
